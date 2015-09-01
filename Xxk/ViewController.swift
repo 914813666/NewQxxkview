@@ -23,6 +23,7 @@ class ViewController: UIViewController {
         
         
         var  xview = QxxkView(frame:CGRectMake(0, 50, self.view.bounds.size.width, 400),viewTitles:["新闻","艺术","本地新闻","三个字","HELLO","天"],views:[v1,v2,v3,v4,v2,v1])
+        xview.canShake = false
         self.view.addSubview(xview)
         
     }
