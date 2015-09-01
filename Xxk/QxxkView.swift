@@ -29,6 +29,7 @@ class QxxkView: UIView {
     var canShake: Bool = true
     
     
+    
     var barLabelColor: UIColor = UIColor.orangeColor()
     
     
@@ -137,6 +138,7 @@ class QxxkView: UIView {
     func scrollViewStop(btn: UIButton) {
         var tag = btn.tag - TAG
         println(tag)
+        self.currentIndex = tag
         let selfWidth = self.bounds.size.width
         // self.centerScrollView.contentOffset = CGPointMake(CGFloat(tag) * selfWidth, 0)
         
@@ -171,6 +173,25 @@ class QxxkView: UIView {
                 
                 
         }
+        
+        topScrollViewEndPosition()
+    }
+    
+    ///
+    func topScrollViewEndPosition() {
+        var x = self.topBarLabel.frame.origin.x
+        var  a : CGFloat = self.topWidth * CGFloat(self.currentIndex+1) - CGRectGetWidth(self.topScrollView.frame) + self.frame.size.width/2
+        println(self.topScrollView.contentSize.width )
+        if a < 0 {a=0}
+        if x + self.topWidth >= self.topScrollView.contentSize.width - self.frame.size.width/2  {
+            a = self.topScrollView.contentSize.width - CGRectGetWidth(self.topScrollView.frame)
+        }
+        println(a)
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.topScrollView.contentOffset = CGPointMake(a, 0)
+            }, completion: { (b ) -> Void in
+                
+        })
     }
     
 }
