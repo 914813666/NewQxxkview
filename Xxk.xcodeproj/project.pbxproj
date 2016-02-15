@@ -162,6 +162,8 @@
 		0FA8EABF1B9402E500F25F4A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0720;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = qzp;
 				TargetAttributes = {
@@ -417,6 +419,7 @@
 				0FA8EAE81B9402E600F25F4A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0FA8EAE91B9402E600F25F4A /* Build configuration list for PBXNativeTarget "XxkTests" */ = {
 			isa = XCConfigurationList;
@@ -425,6 +428,7 @@
 				0FA8EAEB1B9402E600F25F4A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -16,15 +16,18 @@ class ViewController: UIViewController {
         let w = self.view.bounds.size.width
         let h = self.view.bounds.size.height
         
-        var v1 = TestView(frame: CGRectMake(0, 0, w, h), color: UIColor.grayColor())
-        var v2 = TestView(frame: CGRectMake(0, 0, w, h), color: UIColor.redColor())
-        var v3 = TestView(frame: CGRectMake(0, 0, w, h), color: UIColor.yellowColor())
-        var v4 = TestView(frame: CGRectMake(0, 0, w, h), color: UIColor.purpleColor())
+        let v1 = TestView(frame: CGRectMake(0, 0, w, h), color: UIColor.grayColor())
+        let v2 = TestView(frame: CGRectMake(0, 0, w, h), color: UIColor.redColor())
+        let v3 = TestView(frame: CGRectMake(0, 0, w, h), color: UIColor.yellowColor())
+        let v4 = TestView(frame: CGRectMake(0, 0, w, h), color: UIColor.purpleColor())
         
         
-        var  xview = QxxkView(frame:CGRectMake(0, 50, self.view.bounds.size.width, 400),viewTitles:["新闻","艺术","本地新闻","三个字","HELLO","天"],views:[v1,v2,v3,v4,v2,v1])
+        let  xview = QxxkView(frame:CGRectMake(0, 50, self.view.bounds.size.width, 400),viewTitles:["新闻","艺术","本地新闻","三个字","HELLO","天"],views:[v1,v2,v3,v4,v2,v1])
         xview.canShake = false
         self.view.addSubview(xview)
+        xview.QxxkViewClickIndex = {(index: Int)  in
+            print(index)
+        }
         
     }
 

@@ -28,6 +28,9 @@ class QxxkView: UIView {
     //是否抖动
     var canShake: Bool = true
     
+    ///回调
+    var QxxkViewClickIndex: ((index: Int) -> Void)?
+    
     
     
     var barLabelColor: UIColor = UIColor.orangeColor()
@@ -58,7 +61,7 @@ class QxxkView: UIView {
         initializeUserInterface()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -69,7 +72,7 @@ class QxxkView: UIView {
         //print(selfWidth)
         
         topScrollView = {
-            var scrollview = UIScrollView(frame: CGRect(x: 0,y: 0,width: selfWidth,height: self.topHeight))
+            let scrollview = UIScrollView(frame: CGRect(x: 0,y: 0,width: selfWidth,height: self.topHeight))
             self.addSubview(scrollview)
             scrollview.delegate = self
             scrollview.showsHorizontalScrollIndicator = false
@@ -78,11 +81,11 @@ class QxxkView: UIView {
             return scrollview
             }()
         
-        var topLineLabel1 = UILabel(frame: CGRectMake(0, CGRectGetMinY(topScrollView.frame), selfWidth, 1))
+        let topLineLabel1 = UILabel(frame: CGRectMake(0, CGRectGetMinY(topScrollView.frame), selfWidth, 1))
         topLineLabel1.backgroundColor = garyColor
         self.addSubview(topLineLabel1)
         
-        var topLineLabel2 = UILabel(frame: CGRectMake(0, CGRectGetMaxY(topScrollView.frame)-1, selfWidth, 1))
+        let topLineLabel2 = UILabel(frame: CGRectMake(0, CGRectGetMaxY(topScrollView.frame)-1, selfWidth, 1))
         topLineLabel2.backgroundColor = garyColor
         self.addSubview(topLineLabel2)
         
@@ -93,12 +96,12 @@ class QxxkView: UIView {
         var leftX: CGFloat = 0;
         for(var i = 0; i < self.viewTitles.count; i++) {
             leftX =   CGFloat(i) * self.topWidth
-            var label = UILabel(frame: CGRectMake(leftX, 0, self.topWidth, self.topHeight))
+            let label = UILabel(frame: CGRectMake(leftX, 0, self.topWidth, self.topHeight))
             label.text = self.viewTitles[i]
             label.textAlignment = .Center
             topScrollView.addSubview(label)
             
-            var btn = UIButton(frame: CGRectMake(leftX, 0, self.topWidth, self.topHeight))
+            let btn = UIButton(frame: CGRectMake(leftX, 0, self.topWidth, self.topHeight))
             btn.addTarget(self, action: Selector("buttonClick:"), forControlEvents: .TouchUpInside)
             btn.tag = TAG + i
             topScrollView.addSubview(btn)
@@ -106,7 +109,7 @@ class QxxkView: UIView {
         
         
         centerScrollView = {
-            var scrollView = UIScrollView(frame: CGRectMake(0, CGRectGetMaxY(self.topScrollView.frame), selfWidth, selfHeight - self.topHeight))
+            let scrollView = UIScrollView(frame: CGRectMake(0, CGRectGetMaxY(self.topScrollView.frame), selfWidth, selfHeight - self.topHeight))
             scrollView.delegate = self
             scrollView.pagingEnabled = true
             scrollView.showsHorizontalScrollIndicator = false
@@ -118,8 +121,8 @@ class QxxkView: UIView {
         var cLeftx: CGFloat = 0;
         for(var i = 0; i < self.viewTitles.count; i++) {
             cLeftx = CGFloat(i) * selfWidth
-            println(cLeftx)
-            var view = UIView(frame: CGRectMake(cLeftx, 0, selfWidth, CGRectGetHeight(centerScrollView.frame)))
+            //println(cLeftx)
+            let view = UIView(frame: CGRectMake(cLeftx, 0, selfWidth, CGRectGetHeight(centerScrollView.frame)))
             centerScrollView.addSubview(view)
             view.addSubview(self.views[i])
         }
@@ -129,15 +132,15 @@ class QxxkView: UIView {
     
     func buttonClick(btn: UIButton) {
         self.scrollViewStop(btn)
-        var tag = btn.tag - TAG
+        let tag = btn.tag - TAG
      //   println(tag)
         let selfWidth = self.bounds.size.width
         self.centerScrollView.contentOffset = CGPointMake(CGFloat(tag) * selfWidth, 0)
     }
     
     func scrollViewStop(btn: UIButton) {
-        var tag = btn.tag - TAG
-        println(tag)
+        let tag = btn.tag - TAG
+        //println(tag)
         self.currentIndex = tag
         let selfWidth = self.bounds.size.width
         // self.centerScrollView.contentOffset = CGPointMake(CGFloat(tag) * selfWidth, 0)
@@ -145,7 +148,7 @@ class QxxkView: UIView {
         btn.userInteractionEnabled = false
         for (var i = TAG ; i < TAG + self.viewTitles.count; i++) {
             if i != btn.tag {
-                var mybtn: UIButton = self.viewWithTag(i) as! UIButton
+                let mybtn: UIButton = self.viewWithTag(i) as! UIButton
                 mybtn.userInteractionEnabled = true
             }
         }
@@ -158,8 +161,8 @@ class QxxkView: UIView {
             }) { (_) -> Void in
                 if self.canShake == false {return}
                 
-                var currentOX = self.topBarLabel.frame.origin.x
-                var rCX = currentOX + 5
+                let currentOX = self.topBarLabel.frame.origin.x
+                let rCX = currentOX + 5
                 
                 UIView.animateWithDuration(0.05, animations: { () -> Void in
                     var frame = self.topBarLabel.frame
@@ -175,18 +178,21 @@ class QxxkView: UIView {
         }
         
         topScrollViewEndPosition()
+        
+        self.QxxkViewClickIndex?(index: self.currentIndex)
+        
     }
     
     ///
     func topScrollViewEndPosition() {
-        var x = self.topBarLabel.frame.origin.x
+        let x = self.topBarLabel.frame.origin.x
         var  a : CGFloat = self.topWidth * CGFloat(self.currentIndex+1) - CGRectGetWidth(self.topScrollView.frame) + self.frame.size.width/2
-        println(self.topScrollView.contentSize.width )
+        //println(self.topScrollView.contentSize.width )
         if a < 0 {a=0}
         if x + self.topWidth >= self.topScrollView.contentSize.width - self.frame.size.width/2  {
             a = self.topScrollView.contentSize.width - CGRectGetWidth(self.topScrollView.frame)
         }
-        println(a)
+        //println(a)
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.topScrollView.contentOffset = CGPointMake(a, 0)
             }, completion: { (b ) -> Void in
@@ -202,9 +208,9 @@ extension QxxkView: UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         
         if scrollView == self.centerScrollView {
-            var index: Int = Int(scrollView.contentOffset.x / CGRectGetWidth(self.topScrollView.frame))
-            print(index)
-            var btn: UIButton = self.viewWithTag(TAG+index) as! UIButton
+            let index: Int = Int(scrollView.contentOffset.x / CGRectGetWidth(self.topScrollView.frame))
+           // print(index)
+            let btn: UIButton = self.viewWithTag(TAG+index) as! UIButton
             scrollViewStop(btn)
         }
     }
